@@ -493,7 +493,7 @@ def validate_html(html: str) -> dict[str, Any]:
                 tf.write(combined_js)
                 tmp_js = tf.name
             try:
-                proc = subprocess.run([node, "--check", tmp_js], capture_output=True, text=True, timeout=30)
+                proc = subprocess.run([node, "--check", tmp_js], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
                 if proc.returncode == 0:
                     js_status = "passed"
                     js_detail = "JS 構文チェック合格"
@@ -556,6 +556,8 @@ def check_render(html: str, work_dir: Path | None = None) -> dict[str, Any]:
             ],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=30,
         )
         dom = proc.stdout or ""
